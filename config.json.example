@@ -3,5 +3,7 @@
   "tmdbapikey": "abcdefghijklmnopqrstvwxyzabcdefg",
   "flickrapikey": "abcdefghijklmnopqrstvwxyzabcdefg",
   "dbhost": "192.168.25.25:28015",
-  "dbname": "titanbot"
+  "dbname": "titanbot",
+  "mchost": "127.0.0.1:11211",
+  "mcttl": 43200
 }

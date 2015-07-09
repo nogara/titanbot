@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 	"text/template"
@@ -71,30 +70,28 @@ func pluginArtist(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/artist "))
 
-	res, err := http.Get(fmt.Sprintf("https://api.themoviedb.org/3/search/person?api_key=%s&query=%s", config.TMDBAPIKey, key))
+	content, err := getRemoteURL(fmt.Sprintf("https://api.themoviedb.org/3/search/person?api_key=%s&query=%s", config.TMDBAPIKey, key))
 	if err != nil {
 		logrus.Error("pluginArtist:", err)
 		return
 	}
-	defer res.Body.Close()
 
 	var person Person
-	err = json.NewDecoder(res.Body).Decode(&person)
+	err = json.Unmarshal(content, &person)
 	if err != nil {
 		logrus.Error("pluginArtist:", err)
 		return
 	}
 
 	if person.TotalResults > 0 {
-		res, err := http.Get(fmt.Sprintf("https://api.themoviedb.org/3/person/%d?api_key=%s", person.Results[0].ID, config.TMDBAPIKey))
+		content, err := getRemoteURL(fmt.Sprintf("https://api.themoviedb.org/3/person/%d?api_key=%s", person.Results[0].ID, config.TMDBAPIKey))
 		if err != nil {
 			logrus.Error("pluginArtist:", err)
 			return
 		}
-		defer res.Body.Close()
 
 		var personDetail PersonDetail
-		err = json.NewDecoder(res.Body).Decode(&personDetail)
+		err = json.Unmarshal(content, &personDetail)
 		if err != nil {
 			logrus.Error("pluginArtist:", err)
 			return

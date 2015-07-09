@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 	"text/template"
@@ -48,15 +47,14 @@ func pluginMovie(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/movie "))
 
-	res, err := http.Get(fmt.Sprintf("http://www.omdbapi.com/?t=%s&plot=short&type=movie&r=json", key))
+	content, err := getRemoteURL(fmt.Sprintf("http://www.omdbapi.com/?t=%s&plot=short&type=movie&r=json", key))
 	if err != nil {
 		logrus.Error("pluginMovie:", err)
 		return
 	}
-	defer res.Body.Close()
 
 	var movie Movie
-	err = json.NewDecoder(res.Body).Decode(&movie)
+	err = json.Unmarshal(content, &movie)
 	if err != nil {
 		logrus.Error("pluginMovie:", err)
 		return

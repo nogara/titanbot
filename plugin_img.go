@@ -6,7 +6,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"math/rand"
-	"net/http"
 	"net/url"
 	"strings"
 	"text/template"
@@ -56,15 +55,14 @@ func pluginImg(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/img "))
 
-	res, err := http.Get(fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&safe_search=3&sort=relevance&per_page=10&extras=url_z,url_n,url_o&text=%s", config.FlickrAPIKey, key))
+	content, err := getRemoteURL(fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&safe_search=3&sort=relevance&per_page=10&extras=url_z,url_n,url_o&text=%s", config.FlickrAPIKey, key))
 	if err != nil {
 		logrus.Error("pluginImg:", err)
 		return
 	}
-	defer res.Body.Close()
 
 	var image Image
-	err = xml.NewDecoder(res.Body).Decode(&image)
+	err = xml.Unmarshal(content, &image)
 	if err != nil {
 		logrus.Error("pluginImg:", err)
 		return

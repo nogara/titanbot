@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	"net/http"
 	"net/url"
 	"strings"
 
@@ -161,15 +160,14 @@ func pluginGif(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/gif "))
 
-	res, err := http.Get(fmt.Sprintf("http://api.giphy.com/v1/gifs/search?q=%s&api_key=dc6zaTOxFJmzC", key))
+	content, err := getRemoteURL(fmt.Sprintf("http://api.giphy.com/v1/gifs/search?q=%s&api_key=dc6zaTOxFJmzC", key))
 	if err != nil {
 		logrus.Error("pluginGif:", err)
 		return
 	}
-	defer res.Body.Close()
 
 	var giphy Giphy
-	err = json.NewDecoder(res.Body).Decode(&giphy)
+	err = json.Unmarshal(content, &giphy)
 	if err != nil {
 		logrus.Error("pluginGif:", err)
 		return

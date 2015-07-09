@@ -17,6 +17,7 @@ func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	initializeConfig()
 	initializeDB()
+	initializeCache()
 }
 
 func main() {

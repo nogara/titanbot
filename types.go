@@ -7,6 +7,8 @@ type Config struct {
 	FlickrAPIKey   string `json:"flickrapikey"`
 	DBHost         string `json:"dbhost"`
 	DBName         string `json:"dbname"`
+	MCHost         string `json:"mchost"`
+	MCTTL          int32  `json:"mcttl"`
 }
 
 // Object is the reference for the DB object

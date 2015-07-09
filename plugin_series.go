@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 	"text/template"
@@ -48,15 +47,14 @@ func pluginSeries(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/series "))
 
-	res, err := http.Get(fmt.Sprintf("http://www.omdbapi.com/?t=%s&plot=short&type=series&r=json", key))
+	content, err := getRemoteURL(fmt.Sprintf("http://www.omdbapi.com/?t=%s&plot=short&type=series&r=json", key))
 	if err != nil {
 		logrus.Error("pluginSeries:", err)
 		return
 	}
-	defer res.Body.Close()
 
 	var series Series
-	err = json.NewDecoder(res.Body).Decode(&series)
+	err = json.Unmarshal(content, &series)
 	if err != nil {
 		logrus.Error("pluginSeries:", err)
 		return
