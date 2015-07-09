@@ -56,7 +56,7 @@ func pluginImg(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/img "))
 
-	res, err := http.Get(fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&extras=url_z,url_n,url_o&text=%s", config.FlickrAPIKey, key))
+	res, err := http.Get(fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&safe_search=3&sort=relevance&per_page=10&extras=url_z,url_n,url_o&text=%s", config.FlickrAPIKey, key))
 	if err != nil {
 		logrus.Error("pluginImg:", err)
 		return
