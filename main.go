@@ -58,6 +58,8 @@ func processUpdate(result Result) {
 		pluginHelp(result)
 	case strings.HasPrefix(result.Message.Text, "/help"):
 		pluginHelp(result)
+	case strings.HasPrefix(result.Message.Text, "/comando"):
+		pluginComando(result)
 	case strings.HasPrefix(result.Message.Text, "/g "):
 		pluginSearch(result)
 	case strings.HasPrefix(result.Message.Text, "/gif "):
