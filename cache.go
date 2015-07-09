@@ -6,6 +6,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/golang/snappy/snappy"
 )
 
 var cacher *memcache.Client
@@ -31,7 +32,12 @@ func getRemoteURL(url string) ([]byte, error) {
 		}
 		defer res.Body.Close()
 
-		content, err := ioutil.ReadAll(res.Body)
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		content, err := snappy.Encode(nil, body)
 		if err != nil {
 			return nil, err
 		}
@@ -40,7 +46,13 @@ func getRemoteURL(url string) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		return content, nil
+		return body, nil
 	}
-	return item.Value, nil
+
+	content, err := snappy.Decode(nil, item.Value)
+	if err != nil {
+		return nil, err
+	}
+
+	return content, nil
 }
