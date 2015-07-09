@@ -31,9 +31,15 @@ type Image struct {
 			IsPublic int    `xml:"ispublic,attr"`
 			IsFriend int    `xml:"isfriend,attr"`
 			IsFamily int    `xml:"isfamily,attr"`
+			URLZ     string `xml:"url_z,attr"`
+			HeightZ  string `xml:"height_z,attr"`
+			WidthZ   string `xml:"width_z,attr"`
 			URLN     string `xml:"url_n,attr"`
 			HeightN  string `xml:"height_n,attr"`
 			WidthN   string `xml:"width_n,attr"`
+			URLO     string `xml:"url_o,attr"`
+			HeightO  string `xml:"height_o,attr"`
+			WidthO   string `xml:"width_o,attr"`
 		} `xml:"photo"`
 	} `xml:"photos"`
 	Stat string `xml:"stat,attr"`
@@ -50,7 +56,7 @@ func pluginImg(result Result) {
 
 	key := url.QueryEscape(strings.TrimPrefix(result.Message.Text, "/img "))
 
-	res, err := http.Get(fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&extras=url_n&text=%s", config.FlickrAPIKey, key))
+	res, err := http.Get(fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&extras=url_z,url_n,url_o&text=%s", config.FlickrAPIKey, key))
 	if err != nil {
 		logrus.Error("pluginImg:", err)
 		return
@@ -81,7 +87,16 @@ func pluginImg(result Result) {
 		}
 		w.Flush()
 
-		object, err := getRemoteObject(image.Photos.Photo[index].URLN)
+		var imageURL string
+		if len(image.Photos.Photo[index].URLZ) > 0 {
+			imageURL = image.Photos.Photo[index].URLZ
+		} else if len(image.Photos.Photo[index].URLN) > 0 {
+			imageURL = image.Photos.Photo[index].URLN
+		} else if len(image.Photos.Photo[index].URLO) > 0 {
+			imageURL = image.Photos.Photo[index].URLO
+		}
+
+		object, err := getRemoteObject(imageURL)
 		if err != nil {
 			logrus.Error("pluginImg:", err)
 			return
