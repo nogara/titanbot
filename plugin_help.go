@@ -16,14 +16,7 @@ func pluginHelp(result Result) {
 
 More commands will be added soon, check back often for new stuff!
 
-Results are retrieved from multiple sources, including:
-* Google - http://google.com/
-* Flickr - http://flickr.com/
-* Giphy - http://giphy.com/
-* OMDb - http://omdbapi.com/
-* TMDb - http://themoviedb.org/
-
-`, true)
+Results are retrieved from multiple sources, including: Google, Flickr, Giphy, OMDb and TMDb.`, true)
 	if err != nil {
 		logrus.Error("pluginHelp:", err)
 		return
