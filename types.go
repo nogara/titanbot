@@ -4,6 +4,7 @@ package main
 type Config struct {
 	TelegramAPIKey string `json:"telegramapikey"`
 	TMDBAPIKey     string `json:"tmdbapikey"`
+	FlickrAPIKey   string `json:"flickrapikey"`
 	DBHost         string `json:"dbhost"`
 	DBName         string `json:"dbname"`
 }

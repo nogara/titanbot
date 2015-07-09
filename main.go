@@ -66,5 +66,7 @@ func processUpdate(result Result) {
 		pluginSeries(result)
 	case strings.HasPrefix(result.Message.Text, "/artist "):
 		pluginArtist(result)
+	case strings.HasPrefix(result.Message.Text, "/img "):
+		pluginImg(result)
 	}
 }

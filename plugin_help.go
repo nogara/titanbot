@@ -8,6 +8,7 @@ func pluginHelp(result Result) {
 	err := sendMessage(result.Message.Chat.ID, result.Message.MessageID, `This bot have multiple uses, currently the following commands are available:
 
 /g [keyword] - Search Google
+/img [keyword] - Search for a random image
 /gif [keyword] - Search for a random gif
 /movie [keyword] - Search for movie info
 /series [keyword] - Search for tv series info
@@ -17,6 +18,7 @@ More commands will be added soon, check back often for new stuff!
 
 Results are retrieved from multiple sources, including:
 * Google - http://google.com/
+* Flickr - http://flickr.com/
 * Giphy - http://giphy.com/
 * OMDb - http://omdbapi.com/
 * TMDb - http://themoviedb.org/

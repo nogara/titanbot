@@ -1,6 +1,7 @@
 {
   "telegramapikey": "123456789:abcdefghijklmnopqrstvwxyzabcdefghij",
   "tmdbapikey": "abcdefghijklmnopqrstvwxyzabcdefg",
+  "flickrapikey": "abcdefghijklmnopqrstvwxyzabcdefg",
   "dbhost": "192.168.25.25:28015",
   "dbname": "titanbot"
 }
