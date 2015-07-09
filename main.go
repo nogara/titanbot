@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"runtime"
 	"strings"
@@ -13,6 +14,7 @@ import (
 
 func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
+	rand.Seed(time.Now().UTC().UnixNano())
 	initializeConfig()
 	initializeDB()
 }
